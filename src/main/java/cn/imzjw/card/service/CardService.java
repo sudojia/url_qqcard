@@ -36,7 +36,7 @@ public class CardService {
      * @return 文件保存的地址。
      */
     public static String downRemoteFile(String remoteFileUrl, String saveFileName, String saveDir) {
-        LOGGER.info("--------开始下载远程文件：" + remoteFileUrl);
+        LOGGER.info("--------开始下载远程文件--------");
         HttpURLConnection conn = null;
         OutputStream oputstream = null;
         InputStream iputstream = null;
