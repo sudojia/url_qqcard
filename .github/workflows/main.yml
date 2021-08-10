@@ -28,7 +28,7 @@ jobs:
           FILE_URL: ${{ secrets.FILE_URL }}
         run: |
           mvn clean
-          mvn compile exec:java -Dexec.mainClass="cn.imzjw.Main" -Dexec.args="${FILE_URL}"
+          mvn compile exec:java -Dexec.mainClass="cn.imzjw.card.Main" -Dexec.args="${FILE_URL}"
 
       # 自动删除 Workflow
       - name: Delete Workflow Runs
