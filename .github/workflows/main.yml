@@ -3,8 +3,10 @@ name: Main
 on:
   push:
   gollum:
-  schedule:
-    - cron: '0 13 1-31/2 * *' # UTC
+  #schedule:
+    #- cron: '0 13 1-31/2 * *' # UTC
+  watch:
+    types: [started]
 
 jobs:
   Code:
