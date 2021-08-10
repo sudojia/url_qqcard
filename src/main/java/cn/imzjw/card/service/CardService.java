@@ -1,6 +1,8 @@
 package cn.imzjw.card.service;
 
+import cn.imzjw.card.entity.JsonData;
 import cn.imzjw.card.utils.HttpUtils;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,7 @@ public class CardService {
      * @return 文件保存的地址。
      */
     public static String downRemoteFile(String remoteFileUrl, String saveFileName, String saveDir) {
+        LOGGER.info("--------开始下载远程文件：" + remoteFileUrl);
         HttpURLConnection conn = null;
         OutputStream oputstream = null;
         InputStream iputstream = null;
@@ -46,8 +49,6 @@ public class CardService {
             // 将 url 以 open 方法返回的 urlConnection 连接强转为 HttpURLConnection 连接(标识一个 url 所引用的远程对象连接)
             // 此时 cnnection 只是为一个连接对象,待连接中
             conn = (HttpURLConnection) url.openConnection();
-            // 设置是否要从 URL连接读取数据,默认为就 true
-            conn.setDoInput(true);
             // 建立连接
             // (请求未开始,直到 connection.getInputStream() 方法调用时才发起,以上各个参数设置需在此方法之前进行)
             conn.connect();
@@ -100,19 +101,18 @@ public class CardService {
             String s = null;
             // 使用 readLine 方法，一次读一行
             while ((s = br.readLine()) != null) {
-                LOGGER.info(HttpUtils.sendGet(URL + s));
+                String json = HttpUtils.sendGet(URL + s);
+                LOGGER.info(JSON.parseObject(json.substring(10, json.length() - 2), JsonData.class).getTitle());
             }
             // 关流
             br.close();
-        } catch (Exception e) {
-            LOGGER.info("读取文件失败 -> ", e);
-        } finally {
-            // 请求完所有 URL 直接删除文件。不要问我为什么
             if (file.delete()) {
-                LOGGER.info(file.getName() + " 文件已删除！");
+                LOGGER.info("\n" + file.getName() + " 文件已删除！");
             } else {
                 LOGGER.info("文件删除失败！");
             }
+        } catch (Exception e) {
+            LOGGER.info("读取文件失败 -> ", e);
         }
     }
 }
